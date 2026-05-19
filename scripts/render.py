@@ -26,6 +26,12 @@ def parse_args() -> argparse.Namespace:
         default="auto",
         help="initial color theme (default: auto)",
     )
+    p.add_argument(
+        "--layout",
+        choices=("article", "report"),
+        default="article",
+        help="page layout (default: article)",
+    )
     p.add_argument("--title", default=None, help="document title")
     p.add_argument("--no-mermaid", action="store_true", help="don't inline Mermaid")
     p.add_argument("--no-toc", action="store_true", help="skip table of contents")
@@ -57,6 +63,7 @@ def main() -> int:
     opts = PipelineOptions(
         title=args.title,
         theme=args.theme,
+        layout=args.layout,
         inline_mermaid=not args.no_mermaid,
         include_toc=not args.no_toc,
         base_dir=args.input if args.input.is_dir() else args.input.parent,

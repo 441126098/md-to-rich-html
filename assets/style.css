@@ -239,13 +239,17 @@ body {
 }
 
 .toc {
-  position: sticky;
-  top: 5rem;
   align-self: start;
-  max-height: calc(100vh - 6rem);
-  overflow-y: auto;
   font-family: var(--font-sans);
   font-size: 0.85rem;
+}
+@media (min-width: 960px) {
+  .toc {
+    position: sticky;
+    top: 5rem;
+    max-height: calc(100vh - 6rem);
+    overflow-y: auto;
+  }
 }
 .toc-title {
   font-family: var(--font-mono);
@@ -271,6 +275,149 @@ body {
 .toc-l3 { padding-left: 1.5rem; font-size: 0.95em; }
 
 .content { max-width: var(--measure); min-width: 0; }
+
+/* Report layout ------------------------------------------------ */
+
+.layout-report .topbar {
+  background: color-mix(in srgb, var(--bg) 86%, var(--bg-elev));
+}
+.report-hero {
+  border-bottom: 1px solid var(--border);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent-soft) 46%, transparent), transparent 42%),
+    linear-gradient(180deg, var(--bg-elev), var(--bg));
+}
+.report-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4.5rem 1.5rem 3.25rem;
+}
+.report-kicker,
+.report-section-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-subtle);
+}
+.report-hero h1 {
+  max-width: 980px;
+  margin: 0.35em 0 0.5em;
+  font-family: var(--font-serif);
+  font-size: clamp(2.3rem, 6vw, 4.7rem);
+  line-height: 0.98;
+  font-weight: 600;
+}
+.report-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  font-family: var(--font-sans);
+  color: var(--fg-muted);
+}
+.report-meta span {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg-elev) 72%, transparent);
+}
+.layout-report .layout {
+  max-width: 1280px;
+  gap: 2.25rem;
+}
+@media (min-width: 960px) {
+  .layout-report .layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+}
+.layout-report .content {
+  max-width: none;
+}
+.report-overview {
+  margin-bottom: 2.5rem;
+  padding: 1.25rem 0 1.5rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.12rem;
+}
+.report-overview > :last-child {
+  margin-bottom: 0;
+}
+.report-section {
+  margin: 0 0 3rem;
+  padding: 0 0 2.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.report-section-head {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: 1.2rem;
+  align-items: start;
+  margin-bottom: 1.1rem;
+}
+.report-section-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--accent);
+  background: var(--bg-elev);
+}
+.report-section-head h2 {
+  margin: 0.15rem 0 0;
+  padding: 0;
+  border: 0;
+  font-size: clamp(1.65rem, 3vw, 2.45rem);
+}
+.report-section-body {
+  padding-left: 4.7rem;
+}
+.report-section-body > :first-child {
+  margin-top: 0;
+}
+.report-section-body > :last-child {
+  margin-bottom: 0;
+}
+.report-section-code .report-section-label { color: var(--accent); }
+.report-section-data .report-section-label { color: var(--added); }
+.report-section-diagram .report-section-label { color: var(--modified); }
+.report-section-checklist .report-section-label { color: #436b88; }
+.layout-report .content h1 {
+  display: none;
+}
+.layout-report .content h3,
+.layout-report .content h4 {
+  font-family: var(--font-sans);
+}
+.layout-report .content table,
+.layout-report .content pre,
+.layout-report .content .hl,
+.layout-report .content .mermaid,
+.layout-report .content blockquote {
+  max-width: 100%;
+}
+.layout-report .content table {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+@media (max-width: 720px) {
+  .report-hero-inner {
+    padding: 3rem 1.25rem 2.4rem;
+  }
+  .report-section-head {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  .report-section-body {
+    padding-left: 0;
+  }
+}
 
 /* Typography --------------------------------------------------- */
 
@@ -315,12 +462,23 @@ body {
   background: var(--bg-elev);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1rem 1.2rem;
   overflow-x: auto;
-  font-size: 0.83rem;
-  line-height: 1.55;
-  margin: 1.4em 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  margin: 1.25em 0;
   box-shadow: var(--shadow-sm);
+}
+.content pre {
+  padding: 0.9rem 1rem;
+}
+.content .hl pre {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
 }
 .content pre code, .content .hl code {
   padding: 0;

@@ -27,9 +27,20 @@ CONFIDENCE_THRESHOLD = 0.4
 class PipelineOptions:
     title: str | None = None
     theme: str = "auto"
+    layout: str = "article"
     inline_mermaid: bool = True
     include_toc: bool = True
     base_dir: Path = field(default_factory=Path.cwd)
+
+
+@dataclass
+class ReportSection:
+    index: int
+    title: str
+    anchor: str
+    heading_html: str
+    body_html: str
+    kind: str
 
 
 @dataclass
@@ -39,6 +50,8 @@ class RenderedDoc:
     path: Path
     raw: str
     html: str
+    intro_html: str
+    sections: list[ReportSection]
     detectors: list[str]
     has_mermaid: bool
 
@@ -76,6 +89,7 @@ class Pipeline:
         return template.render(
             title=title,
             theme=self.opts.theme,
+            layout=self.opts.layout,
             docs=docs,
             toc=toc,
             tasks=tasks,
@@ -104,11 +118,14 @@ class Pipeline:
 
         html = render_to_html(self.md, transformed)
         has_mermaid = bool(re.search(r'<div class="mermaid">', html))
+        intro_html, sections = self._build_report_sections(html)
 
         return RenderedDoc(
             path=path,
             raw=raw,
             html=html,
+            intro_html=intro_html,
+            sections=sections,
             detectors=[d.name for d in active],
             has_mermaid=has_mermaid,
         )
@@ -121,3 +138,53 @@ class Pipeline:
             if m:
                 return m.group(1).strip()
         return "Document"
+
+    def _build_report_sections(self, html: str) -> tuple[str, list[ReportSection]]:
+        html = re.sub(r"<h1\b[^>]*>.*?</h1>", "", html, count=1, flags=re.DOTALL)
+        parts = re.split(r"(<h2\s+id=\"([^\"]+)\"[^>]*>.*?</h2>)", html, flags=re.DOTALL)
+        intro_html = parts[0].strip()
+        sections: list[ReportSection] = []
+
+        for i in range(1, len(parts), 3):
+            heading_html = parts[i]
+            anchor = parts[i + 1]
+            body_html = parts[i + 2].strip() if i + 2 < len(parts) else ""
+            title = re.sub(r"<[^>]+>", "", heading_html).strip()
+            sections.append(
+                ReportSection(
+                    index=len(sections) + 1,
+                    title=title,
+                    anchor=anchor,
+                    heading_html=heading_html,
+                    body_html=body_html,
+                    kind=self._section_kind(body_html),
+                )
+            )
+
+        if not sections and intro_html:
+            sections.append(
+                ReportSection(
+                    index=1,
+                    title="Overview",
+                    anchor="overview",
+                    heading_html='<h2 id="overview">Overview</h2>',
+                    body_html=intro_html,
+                    kind=self._section_kind(intro_html),
+                )
+            )
+            intro_html = ""
+
+        return intro_html, sections
+
+    def _section_kind(self, html: str) -> str:
+        if 'class="mermaid"' in html:
+            return "diagram"
+        if "<table" in html:
+            return "data"
+        if 'class="hl"' in html or "<pre" in html:
+            return "code"
+        if "task-list-item" in html:
+            return "checklist"
+        if "<blockquote" in html:
+            return "callout"
+        return "text"

@@ -40,19 +40,13 @@ def build_md() -> MarkdownIt:
     )
     md.options["highlight"] = _highlight_code
 
-    # Override fence renderer to special-case mermaid.
-    default_fence = md.renderer.rules.get("fence")
-
     def fence_rule(tokens, idx, options, env):
         token: Token = tokens[idx]
         info = (token.info or "").strip()
         if info == "mermaid":
             from html import escape
             return f'<div class="mermaid">{escape(token.content)}</div>\n'
-        if default_fence is not None:
-            return default_fence(tokens, idx, options, env)
-        # markdown-it default behavior would call highlight; we did already.
-        return _highlight_code(token.content, info, None)
+        return _highlight_code(token.content, info.split()[0] if info else None, None)
 
     md.renderer.rules["fence"] = fence_rule
     return md
