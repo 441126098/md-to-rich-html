@@ -1,0 +1,21 @@
+SKILL.md
+  s_de7170242792fb::t_e5a7ea8f9653d1 3,29-31,67-68
+  s_de7170242792fb::t_d7f27aef8f155e 73-74
+  s_de7170242792fb::t_88604f90688a37 8,10,12,14-28,33,35-55,57,59,61-66,72
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "development:1.4.5",
+  "base_commit_sha": "f3a826da73cbf79394d278dd968fbba2f8c6e42c",
+  "prompts": {},
+  "sessions": {
+    "s_de7170242792fb": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e794a-b488-7fd1-80df-5e80a3ae2378",
+        "model": "gpt-5.5"
+      },
+      "human_author": "allenZhang <allenzhang570@gmail.com>"
+    }
+  }
+}
