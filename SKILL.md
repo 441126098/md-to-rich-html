@@ -1,6 +1,18 @@
 ---
 name: md-to-rich-html
 description: Turn Markdown files or folders into a polished, human-readable, self-contained HTML page by having the agent understand the document, choose an appropriate information design, generate custom HTML/CSS/JS, and validate the result. Prefer static validation; use browser-based visual checks only when the page complexity justifies it or the user asks.
+metadata:
+  version: "1.0.0"
+  author: "441126098"
+  tags:
+    - markdown
+    - html
+    - documentation
+    - technical-writing
+    - visualization
+  openclaw:
+    homepage: https://github.com/441126098/md-to-rich-html
+    emoji: "📄"
 ---
 
 # Markdown to Rich HTML
