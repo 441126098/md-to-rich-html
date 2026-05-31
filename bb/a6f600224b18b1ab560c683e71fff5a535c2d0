@@ -1,0 +1,23 @@
+agents/openai.yaml
+  s_64747a2c1982d2::t_dc277d34322a9c 1-4
+README.md
+  s_64747a2c1982d2::t_dc277d34322a9c 1-25
+LICENSE.txt
+  s_64747a2c1982d2::t_dc277d34322a9c 1-21
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "development:1.4.5",
+  "base_commit_sha": "bba6f600224b18b1ab560c683e71fff5a535c2d0",
+  "prompts": {},
+  "sessions": {
+    "s_64747a2c1982d2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e7d27-af40-7b61-9eed-f854da38c74e",
+        "model": "gpt-5.5"
+      },
+      "human_author": "allenZhang <allenzhang570@gmail.com>"
+    }
+  }
+}
